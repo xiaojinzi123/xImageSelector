@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10px">
+
+    <FrameLayout
+        android:id="@+id/iv_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24px"
+        android:layout_marginRight="24px"
+        android:background="@drawable/folder_bg"
+        android:padding="2dp">
+
+        <ImageView
+            android:id="@+id/iv"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@mipmap/ic_launcher" />
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/iv_container">
+
+        <TextView
+            android:id="@+id/tv_folder_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="folder_name"
+            android:textColor="@color/black"
+            android:textSize="@dimen/app_text_size" />
+
+        <TextView
+            android:id="@+id/tv_images_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_folder_name"
+            android:text="images_number"
+            android:textColor="@color/black"
+            android:textSize="18px" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_choose_flag"
+        android:layout_width="24px"
+        android:layout_height="24px"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/app_text_size"
+        android:src="@mipmap/image2" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/iv_container"
+        android:layout_marginTop="10px"
+        android:background="#888888" />
+
+</RelativeLayout>

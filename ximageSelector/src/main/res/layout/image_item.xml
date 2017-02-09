@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="2px">
+
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="match_parent"
+        android:layout_height="250px"
+        android:scaleType="centerCrop" />
+
+    <View
+        android:id="@+id/view_cover"
+        android:layout_width="match_parent"
+        android:layout_height="250px"
+        android:layout_centerInParent="true"/>
+
+    <ImageView
+        android:id="@+id/iv_select_flag"
+        android:layout_width="48px"
+        android:layout_height="48px"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="14px"
+        android:layout_marginTop="14px"
+        android:src="@mipmap/unselect" />
+
+</RelativeLayout>

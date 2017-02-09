@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#4d4d4d"
+    android:fitsSystemWindows="true"
+    tools:context=".imageView.XSelectAct">
+    <!--标题栏-->
+    <RelativeLayout
+        android:id="@+id/rl_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="108px"
+        android:background="#4d4d4d"
+        android:paddingBottom="10px"
+        android:paddingTop="10px">
+
+        <RelativeLayout
+            android:id="@+id/rl_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="50px"
+                android:layout_height="40px"
+                android:layout_centerVertical="true"
+                android:paddingLeft="10px"
+                android:src="@mipmap/back_icon" />
+
+            <TextView
+                android:id="@+id/tv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/iv_back"
+                android:text="图片"
+                android:textColor="@color/white"
+                android:textScaleX="1.1"
+                android:textSize="30px" />
+
+        </RelativeLayout>
+
+
+        <Button
+            android:id="@+id/tv_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="68px"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="36px"
+            android:background="@drawable/bg"
+            android:text="确定"
+            android:textColor="@color/white"
+            android:textSize="24px" />
+
+    </RelativeLayout>
+
+    <!--展示图片-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/rl_titlebar"
+        android:background="@color/black" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100px"
+        android:layout_alignParentBottom="true"
+        android:background="#CC4d4d4d">
+
+        <TextView
+            android:id="@+id/tv_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:paddingLeft="24px"
+            android:text="全部图片"
+            android:textColor="@color/white"
+            android:textSize="@dimen/app_text_size" />
+
+        <ImageView
+            android:layout_width="20px"
+            android:layout_height="20px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="4px"
+            android:layout_toRightOf="@+id/tv_tip"
+            android:src="@mipmap/image1" />
+
+        <TextView
+            android:id="@+id/tv_cancel_select"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="24px"
+            android:layout_toLeftOf="@+id/tv_preview"
+            android:gravity="center"
+            android:paddingLeft="24px"
+            android:paddingRight="24px"
+            android:text="取消选择"
+            android:textColor="@color/white"
+            android:textSize="@dimen/app_text_size"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/tv_preview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="24px"
+            android:gravity="center"
+            android:paddingLeft="24px"
+            android:paddingRight="24px"
+            android:text="预览"
+            android:textColor="@color/white"
+            android:textSize="@dimen/app_text_size" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
