@@ -33,8 +33,8 @@ public class MainAct extends AppCompatActivity {
                 .title("图片")
                 .isPreview(true)
                 .maxNum(1)
-                .isPreview(false)
-                .cropSize(1, 1, 800, 800)
+                .isPreview(true)
+                .cropSize(1, 1, 500, 500)
                 .isCamera(true)
                 .isCrop(true)
                 .build(), 123);

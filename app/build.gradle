@@ -26,6 +26,7 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.1.1'
     testCompile 'junit:junit:4.12'
-    compile project(':ximageSelector')
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    //依赖图片选择器
+    compile 'com.github.xiaojinzi123:xImageSelector:1.0'
 }

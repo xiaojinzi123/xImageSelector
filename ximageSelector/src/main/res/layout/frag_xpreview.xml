@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.xiaojinzi.ximagelib.widget.TouchImageView
+    <com.move.ximageSelector.widget.TouchImageView
         android:id="@+id/iv"
         android:layout_width="768px"
         android:layout_height="1280px"
