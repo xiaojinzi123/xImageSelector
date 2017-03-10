@@ -4,6 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/XImageSelectorDemo.iml" filepath="$PROJECT_DIR$/XImageSelectorDemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xImageSelector.iml" filepath="$PROJECT_DIR$/xImageSelector.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ximageSelector/ximageSelector.iml" filepath="$PROJECT_DIR$/ximageSelector/ximageSelector.iml" />
       <module fileurl="file://$PROJECT_DIR$/ximageSelector/ximageSelector.iml" filepath="$PROJECT_DIR$/ximageSelector/ximageSelector.iml" />
     </modules>
   </component>
