@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.move.ximageSelector.R;
@@ -81,6 +82,12 @@ public class XPreviewAct extends AutoLayoutActivity implements View.OnClickListe
 
         mContext = this;
 
+        //检查运行必要的配置参数
+        if (XImage.getConfig() == null) {
+            Toast.makeText(mContext, "参数错误", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         //初始化控件
         initView();
 
@@ -130,9 +137,9 @@ public class XPreviewAct extends AutoLayoutActivity implements View.OnClickListe
         tv_index_of_all_image.setText((position + 1) + "/" + images.size());
         Boolean b = XImageRecoder.getInstance().isSelect(images.get(position));
         if (b != null && b) {
-            iv_select_icon.setImageResource(R.mipmap.select);
+            iv_select_icon.setImageResource(XImage.getConfig().itemSelectedImg);
         } else {
-            iv_select_icon.setImageResource(R.mipmap.unselect);
+            iv_select_icon.setImageResource(XImage.getConfig().itemUnSelectedImg);
         }
     }
 
@@ -162,6 +169,8 @@ public class XPreviewAct extends AutoLayoutActivity implements View.OnClickListe
             return;
         }
 
+        XImgSelConfig config = XImage.getConfig();
+
         int size = images.size();
         for (int i = 0; i < size; i++) {
             String localPath = images.get(i);
@@ -174,7 +183,18 @@ public class XPreviewAct extends AutoLayoutActivity implements View.OnClickListe
         vp.setCurrentItem(position);
 
         tv_index_of_all_image.setText((position + 1) + "/" + images.size());
-        tv_confirm.setText(XImage.getConfig().btnConfirmText + "（" + XImageRecoder.getInstance().getSelectImageNumber() + "/" + XImage.getConfig().maxNum + ")");
+        //拿到选中的图片个数
+        int selectImageNumber = XImageRecoder.getInstance().getSelectImageNumber();
+        if (selectImageNumber == 0) {
+            tv_confirm.setText(config.btnConfirmText);
+            tv_confirm.setTextColor(config.textDisabledColor);
+            tv_confirm.setBackgroundResource(config.btnConfirmDisableBgDrawable);
+        } else {
+            tv_confirm.setText(config.btnConfirmText + "（" + selectImageNumber + "/" + config.maxNum + ")");
+            tv_confirm.setTextColor(config.textAbledColor);
+            tv_confirm.setBackgroundResource(config.btnConfirmAbleBgDrawable);
+        }
+
 
         changeFootSelectStatus(position);
 
@@ -208,29 +228,26 @@ public class XPreviewAct extends AutoLayoutActivity implements View.OnClickListe
         XImgSelConfig imgSelConfig = XImage.getConfig();
 
         //状态栏北京
-        if (imgSelConfig.statusBarColor != -1) {
-            rl_titlebar_container.setBackgroundColor(imgSelConfig.statusBarColor);
-        }
+        rl_titlebar_container.setBackgroundColor(imgSelConfig.statusBarColor);
 
         //标题栏背景
-        if (imgSelConfig.titlebarBgColor != -1) {
-            rl_titlebar.setBackgroundColor(imgSelConfig.titlebarBgColor);
-        }
+        rl_titlebar.setBackgroundColor(imgSelConfig.titlebarBgColor);
+        rl_foot_menu.setBackgroundColor(imgSelConfig.titlebarBgColor);
 
         //返回图标
-        if (imgSelConfig.backResId != -1) {
-            iv_back.setImageResource(imgSelConfig.backResId);
-        }
+        //iv_back.setImageResource(imgSelConfig.backResId);
+        //如果返回图标有左边距
+        lp = (ViewGroup.MarginLayoutParams) iv_back.getLayoutParams();
+        lp.leftMargin = imgSelConfig.backResLeftMargin;
+        iv_back.setLayoutParams(lp);
+
 
         //确定按钮的背景颜色
-        if (imgSelConfig.btnConfirmBgDrawable != -1) {
-            tv_confirm.setBackgroundResource(imgSelConfig.btnConfirmBgDrawable);
-        }
+        tv_confirm.setBackgroundResource(imgSelConfig.btnConfirmAbleBgDrawable);
 
         //确定按钮的文字颜色
-        if (imgSelConfig.btnConfirmTextColor != -1) {
-            tv_confirm.setTextColor(imgSelConfig.btnConfirmTextColor);
-        }
+        tv_confirm.setTextColor(imgSelConfig.btnConfirmTextColor);
+
 
         //确定按钮的文本
         tv_confirm.setText(imgSelConfig.btnConfirmText);
@@ -255,37 +272,54 @@ public class XPreviewAct extends AutoLayoutActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
+
+        XImgSelConfig config = XImage.getConfig();
+        XImageRecoder xImageRecoder = XImageRecoder.getInstance();
+
         int id = view.getId();
+
         if (id == R.id.tv_select || id == R.id.iv_select_icon) {
-            XImageRecoder imageRecoder = XImageRecoder.getInstance();
+            XImageRecoder imageRecoder = xImageRecoder;
             //拿到当前显示的这个是否是选中的
             Boolean b = imageRecoder.isSelect(images.get(vp.getCurrentItem()));
             if (b) { //如果是选中的
                 imageRecoder.setSelectStatus(images.get(vp.getCurrentItem()), false);
-                iv_select_icon.setImageResource(R.mipmap.unselect);
+                iv_select_icon.setImageResource(config.itemUnSelectedImg);
                 //让前面的界面刷新数据
                 imageRecoder.setActionFlag(XImageRecoder.ACTION_FLAG_TWO);
             } else {
                 int selectImageNumber = imageRecoder.getSelectImageNumber();
-                if (selectImageNumber >= XImage.getConfig().maxNum) {
-                    T.showShort(mContext, "最多选择" + XImage.getConfig().maxNum + "张图片");
+                if (selectImageNumber >= config.maxNum) {
+                    T.showShort(mContext, "最多选择" + config.maxNum + "张图片");
                     return;
                 }
                 imageRecoder.setSelectStatus(images.get(vp.getCurrentItem()), true);
-                iv_select_icon.setImageResource(R.mipmap.select);
-                if (XImage.getConfig().maxNum <= 1) {
-                    XImageRecoder.getInstance().setActionFlag(XImageRecoder.ACTION_FLAG_ONE);
+                iv_select_icon.setImageResource(config.itemSelectedImg);
+                if (config.maxNum <= 1) {
+                    xImageRecoder.setActionFlag(XImageRecoder.ACTION_FLAG_ONE);
                     finish();
                 } else {
                     //让前面的界面刷新数据
                     imageRecoder.setActionFlag(XImageRecoder.ACTION_FLAG_TWO);
                 }
             }
-            tv_confirm.setText(XImage.getConfig().btnConfirmText + "（" + XImageRecoder.getInstance().getSelectImageNumber() + "/" + XImage.getConfig().maxNum + ")");
+
+            //拿到选中的图片的个数
+            int selectImageNumber = xImageRecoder.getSelectImageNumber();
+            if (selectImageNumber == 0) {
+                tv_confirm.setText(config.btnConfirmText);
+                tv_confirm.setTextColor(config.textDisabledColor);
+                tv_confirm.setBackgroundResource(config.btnConfirmDisableBgDrawable);
+            } else {
+                tv_confirm.setText(config.btnConfirmText + "（" + selectImageNumber + "/" + config.maxNum + ")");
+                tv_confirm.setTextColor(config.textAbledColor);
+                tv_confirm.setBackgroundResource(config.btnConfirmAbleBgDrawable);
+            }
 
         }
-        if (id == R.id.tv_confirm) {
-            XImageRecoder.getInstance().setActionFlag(XImageRecoder.ACTION_FLAG_ONE);
+
+        if (id == R.id.tv_confirm && xImageRecoder.getSelectImageNumber() > 0) { //如果点击了确定并且选中的个数大于0个
+            xImageRecoder.setActionFlag(XImageRecoder.ACTION_FLAG_ONE);
             finish();
         }
     }

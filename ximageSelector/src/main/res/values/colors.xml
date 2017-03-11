@@ -11,5 +11,13 @@
     <!--确定完成按钮按下和不按下的时候的背景颜色-->
     <color name="comfirm_press_color">#777700</color>
     <color name="comfirm_unpress_color">#888800</color>
+    <color name="comfirm_disable_color">#3B6636</color>
+
+    <color name="laurel">#749472</color>
+    <color name="raven">#717174</color>
+    <color name="nero">#262626</color>
+    <color name="monsoon">#757678</color>
+
+
 
 </resources>

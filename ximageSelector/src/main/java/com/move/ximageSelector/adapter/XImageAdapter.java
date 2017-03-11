@@ -68,10 +68,10 @@ public class XImageAdapter extends CommonRecyclerViewAdapter<String> {
         imgSelConfig.loader.load(context, entity, iv);
 
         if (XImageRecoder.getInstance().isSelect(entity)) { //如果是选中的
-            iv_select_flag.setImageResource(R.mipmap.select);
+            iv_select_flag.setImageResource(imgSelConfig.itemSelectedImg);
             view_cover.setAlpha(0.5f);
         } else {
-            iv_select_flag.setImageResource(R.mipmap.unselect);
+            iv_select_flag.setImageResource(imgSelConfig.itemUnSelectedImg);
             view_cover.setAlpha(0f);
         }
 

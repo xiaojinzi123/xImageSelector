@@ -105,19 +105,30 @@ public class XImgSelConfig {
     public String btnConfirmText = "确定";//
 
     /**
-     * 确定按钮的背景
+     * 确定按钮可用时候的背景
      */
-    public int btnConfirmBgDrawable = R.drawable.confirm_bg;//
+    public int btnConfirmAbleBgDrawable = R.drawable.confirm_able_bg;//
+
+    /**
+     * 确定按钮不可用时候的背景
+     */
+    public int btnConfirmDisableBgDrawable = R.drawable.confirm_disable_bg;//
 
     /**
      * 文本不可用颜色值
      */
-    public int textDisabledColor = -1;//
+    public int textDisabledColor = Color.parseColor("#749472");//
 
     /**
      * 文字可用的颜色值
      */
-    public int textAbledColor = -1;//
+    public int textAbledColor = Color.WHITE;//
+
+    //item选中的时候
+    public int itemSelectedImg = R.mipmap.item_select;
+
+    //item没有选中的时候
+    public int itemUnSelectedImg = R.mipmap.item_unselect;
 
     /**
      * 自定义图片加载器
@@ -160,8 +171,11 @@ public class XImgSelConfig {
         if (builder.titlebarBgColor != NULL) {
             this.titlebarBgColor = builder.titlebarBgColor;
         }
-        if (builder.btnConfirmBgDrawable != NULL) {
-            this.btnConfirmBgDrawable = builder.btnConfirmBgDrawable;
+        if (builder.btnConfirmAbleBgDrawable != NULL) {
+            this.btnConfirmAbleBgDrawable = builder.btnConfirmAbleBgDrawable;
+        }
+        if (builder.btnConfirmDisableBgDrawable != NULL) {
+            this.btnConfirmDisableBgDrawable = builder.btnConfirmDisableBgDrawable;
         }
         if (builder.titleColor != NULL) {
             this.titleColor = builder.titleColor;
@@ -171,6 +185,14 @@ public class XImgSelConfig {
         }
         if (builder.btnConfirmTextColor != NULL) {
             this.btnConfirmTextColor = builder.btnConfirmTextColor;
+        }
+
+        if (builder.itemSelectedImg != NULL) {
+            this.itemSelectedImg = builder.itemSelectedImg;
+        }
+
+        if (builder.itemUnSelectedImg != NULL) {
+            this.itemUnSelectedImg = builder.itemUnSelectedImg;
         }
 
         this.loader = builder.loader;
@@ -196,8 +218,11 @@ public class XImgSelConfig {
         private String backTitle = null;
         private int titleColor = NULL;
         private int titlebarBgColor = NULL;
-        private int btnConfirmBgDrawable = NULL;
+        private int btnConfirmAbleBgDrawable = NULL;
+        private int btnConfirmDisableBgDrawable = NULL;
         private int btnConfirmTextColor = NULL;
+        private int itemSelectedImg = NULL;
+        private int itemUnSelectedImg = NULL;
         private String btnConfirmText = null;
 
         private XImageLoader loader;
@@ -291,8 +316,23 @@ public class XImgSelConfig {
             return this;
         }
 
-        public Builder btnConfirmBgDrawable(int btnConfirmBgDrawable) {
-            this.btnConfirmBgDrawable = btnConfirmBgDrawable;
+        public Builder btnConfirmAbleBgDrawable(int btnConfirmAbleBgDrawable) {
+            this.btnConfirmAbleBgDrawable = btnConfirmAbleBgDrawable;
+            return this;
+        }
+
+        public Builder btnConfirmDisableBgDrawable(int btnConfirmDisableBgDrawable) {
+            this.btnConfirmDisableBgDrawable = btnConfirmDisableBgDrawable;
+            return this;
+        }
+
+        public Builder itemSelectedImg(int itemSelectedImg) {
+            this.itemSelectedImg = itemSelectedImg;
+            return this;
+        }
+
+        public Builder itemUnSelectedImg(int itemUnSelectedImg) {
+            this.itemUnSelectedImg = itemUnSelectedImg;
             return this;
         }
 

@@ -24,6 +24,6 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="14px"
         android:layout_marginTop="14px"
-        android:src="@mipmap/unselect" />
+        android:src="@mipmap/item_unselect" />
 
 </RelativeLayout>

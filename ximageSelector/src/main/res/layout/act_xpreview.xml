@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#4d4d4d"
-    tools:context="com.xiaojinzi.ximagelib.imageView.XPreviewAct">
+    tools:context=".imageView.XPreviewAct">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp"
@@ -23,20 +23,20 @@
         <RelativeLayout
             android:id="@+id/rl_titlebar"
             android:layout_width="match_parent"
-            android:layout_height="108px"
+            android:layout_height="wrap_content"
             android:background="#4d4d4d"
             android:fitsSystemWindows="true"
-            android:paddingBottom="10px"
-            android:paddingTop="10px">
+            android:paddingBottom="25px"
+            android:paddingTop="25px">
 
             <RelativeLayout
                 android:id="@+id/rl_back"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/iv_back"
-                    android:layout_width="50px"
+                    android:layout_width="40px"
                     android:layout_height="40px"
                     android:layout_centerVertical="true"
                     android:paddingLeft="10px"
@@ -57,15 +57,17 @@
 
             <Button
                 android:id="@+id/tv_confirm"
-                android:layout_width="wrap_content"
-                android:layout_height="68px"
+                android:layout_width="140px"
+                android:layout_height="54px"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/confirm_bg"
+                android:background="@drawable/confirm_able_bg"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="36px"
+                android:layout_marginRight="10px"
+                android:paddingLeft="3px"
+                android:paddingRight="3px"
                 android:text="确定"
                 android:textColor="@color/white"
-                android:textSize="24px" />
+                android:textSize="22px" />
 
         </RelativeLayout>
 
@@ -84,7 +86,7 @@
             android:layout_height="28px"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/tv_select"
-            android:src="@mipmap/unselect" />
+            android:src="@mipmap/item_unselect" />
 
         <TextView
             android:id="@+id/tv_select"

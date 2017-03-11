@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#4d4d4d"
-        android:paddingBottom="30px"
-        android:paddingTop="30px">
+        android:paddingBottom="25px"
+        android:paddingTop="25px">
 
         <!--返回的返回剪头和文字-->
         <RelativeLayout
@@ -25,8 +25,8 @@
 
             <ImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/iv_back"
-                android:layout_width="48px"
-                android:layout_height="48px"
+                android:layout_width="40px"
+                android:layout_height="40px"
                 android:layout_centerVertical="true"
                 android:paddingLeft="10px"
                 android:src="@mipmap/back_icon"
@@ -41,7 +41,7 @@
                 android:text="图片"
                 android:textColor="@color/white"
                 android:textScaleX="1.1"
-                android:textSize="30px" />
+                android:textSize="24px" />
 
         </RelativeLayout>
 
@@ -55,21 +55,21 @@
             android:text="全部图片"
             android:textColor="@color/white"
             android:textScaleX="1.1"
-            android:textSize="36px" />
+            android:textSize="30px" />
 
         <TextView
             android:id="@+id/tv_confirm"
-            android:layout_width="180px"
-            android:layout_height="68px"
+            android:layout_width="140px"
+            android:layout_height="54px"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:gravity="center"
             android:layout_marginRight="10px"
+            android:gravity="center"
             android:paddingLeft="3px"
             android:paddingRight="3px"
             android:text="确定"
             android:textColor="@color/white"
-            android:textSize="28px" />
+            android:textSize="22px" />
 
     </RelativeLayout>
 
@@ -77,15 +77,16 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="match_parent"
+        android:layout_above="@+id/rl_foot_menu"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
         android:layout_below="@+id/rl_titlebar"
         android:background="@color/black" />
 
     <!--底部的提示菜单-->
     <RelativeLayout
+        android:id="@+id/rl_foot_menu"
         android:layout_width="match_parent"
-        android:layout_height="100px"
+        android:layout_height="80px"
         android:layout_alignParentBottom="true"
         android:background="#CC4d4d4d">
 
@@ -99,7 +100,7 @@
             android:paddingLeft="24px"
             android:text="全部图片"
             android:textColor="@color/white"
-            android:textSize="@dimen/app_text_size" />
+            android:textSize="24px" />
 
         <ImageView
             android:layout_width="20px"
@@ -109,34 +110,45 @@
             android:layout_toRightOf="@+id/tv_tip"
             android:src="@mipmap/image1" />
 
-        <!--取消选中的文本-->
-        <TextView
-            android:id="@+id/tv_cancel_select"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_toLeftOf="@+id/tv_preview"
-            android:gravity="center"
-            android:layout_marginRight="16px"
-            android:text="取消选择"
-            android:textColor="@color/white"
-            android:textSize="@dimen/app_text_size"
-            android:visibility="visible" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <!--预览的文本-->
-        <TextView
-            android:id="@+id/tv_preview"
-            android:layout_width="200px"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:paddingLeft="24px"
-            android:paddingRight="24px"
-            android:text="预览"
-            android:textColor="@color/white"
-            android:textSize="@dimen/app_text_size" />
+            <!--取消选中的文本-->
+            <TextView
+                android:id="@+id/tv_cancel_select"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="16px"
+                android:gravity="center"
+                android:text="取消选择"
+                android:textColor="@color/white"
+                android:textSize="24px"
+                android:visibility="visible" />
+
+            <!--分割线-->
+            <View
+                android:id="@+id/view_split_line"
+                android:layout_width="1dp"
+                android:layout_height="36px"
+                android:background="@color/raven" />
+
+            <!--预览的文本-->
+            <TextView
+                android:id="@+id/tv_preview"
+                android:layout_width="140px"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="24px"
+                android:paddingRight="24px"
+                android:text="预览"
+                android:textColor="@color/white"
+                android:textSize="24px" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 

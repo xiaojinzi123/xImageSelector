@@ -16,13 +16,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.move.ximageSelector.R;
@@ -97,6 +97,9 @@ public class XSelectAct extends AutoLayoutActivity implements IQueryImageView, V
     //状态栏背景色
     private RelativeLayout rl_root;
 
+    //底部的菜单栏
+    private RelativeLayout rl_footMenu;
+
     //标题栏
     private RelativeLayout rl_titlebar;
 
@@ -117,6 +120,9 @@ public class XSelectAct extends AutoLayoutActivity implements IQueryImageView, V
 
     //预览的文本
     private TextView tv_preview;
+
+    //底部的分割线
+    private View view_split_line;
 
     //取消选择的文本
     private TextView tv_cancel_select;
@@ -152,6 +158,12 @@ public class XSelectAct extends AutoLayoutActivity implements IQueryImageView, V
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_xselect);
+
+        //检查运行必要的配置参数
+        if (XImage.getConfig() == null) {
+            Toast.makeText(mContext, "参数错误", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         mContext = this;
 
@@ -201,14 +213,16 @@ public class XSelectAct extends AutoLayoutActivity implements IQueryImageView, V
                     if (imgSelConfig.needCamera) {
                         tmpImages.remove(0);
                     }
+                    //保存需要预览的图片集合
                     XImageRecoder.getInstance().setNeedPreviewImages(tmpImages);
+                    //执行跳转逻辑
                     Intent i = new Intent(mContext, XPreviewAct.class);
                     i.putExtra(XPreviewAct.IMAGEPOSITION_FLAG, position - (imgSelConfig.needCamera ? 1 : 0));
                     mContext.startActivity(i);
                 } else {
                     if (imgSelConfig.maxNum > 1) { //如果要选择多张
                         toggleItemSelectStatus((ImageView) v.findViewById(R.id.iv_select_flag), position);
-                    } else {
+                    } else {//如果是单选的
                         //设置为选中状态
                         XImageRecoder.getInstance().setSelectStatus(mImages.get(position), true);
                         if (imgSelConfig.needCrop) {
@@ -240,48 +254,42 @@ public class XSelectAct extends AutoLayoutActivity implements IQueryImageView, V
      * @param position item的位置
      */
     private void toggleItemSelectStatus(ImageView v, int position) {
+
+        XImgSelConfig config = XImage.getConfig();
+
         //拿到选中的个数
         int selectImageNumber = getSelectImageNumber();
 
         XImageRecoder imageRecoder = XImageRecoder.getInstance();
         Boolean b = !imageRecoder.isSelect(mImages.get(position));
-        if (b && selectImageNumber >= XImage.getConfig().maxNum) {
-            T.showShort(mContext, "最多选择" + XImage.getConfig().maxNum + "张图片");
+        if (b && selectImageNumber >= config.maxNum) { //如果当前的下标的这个是没有被选中的,要被选中的话需要检测是否超出了最大的选择数量
+            T.showShort(mContext, "最多选择" + config.maxNum + "张图片");
             return;
         }
+        //设置选中情况
         imageRecoder.setSelectStatus(mImages.get(position), b);
+
+        //更换下标对应的item的显示效果
         ImageView iv = v;
         View view_cover = ((ViewGroup) iv.getParent()).findViewById(R.id.view_cover);
         if (b) {
             selectImageNumber++;
-            iv.setImageResource(R.mipmap.select);
+            iv.setImageResource(config.itemSelectedImg);
             view_cover.setAlpha(0.5f);
         } else {
             selectImageNumber--;
-            iv.setImageResource(R.mipmap.unselect);
+            iv.setImageResource(config.itemUnSelectedImg);
             view_cover.setAlpha(0f);
         }
 
+        //如果当前选中的数量大于0个
         if (selectImageNumber > 0) {
-            if (!XImage.getConfig().needPreview) { //在预览的时候在预览的文本中会显示选中的个数的
-                tv_confirm.setText(XImage.getConfig().btnConfirmText + "(" + selectImageNumber + "/" + XImage.getConfig().maxNum + ")");
-            }else{
-                tv_preview.setVisibility(View.VISIBLE);
-            }
+            tv_confirm.setText(config.btnConfirmText + "(" + selectImageNumber + "/" + config.maxNum + ")");
             tv_preview.setText("预览(" + selectImageNumber + ")");
-            tv_preview.setTextColor(XImage.getConfig().textAbledColor);
-            tv_cancel_select.setVisibility(View.VISIBLE);
-
+            toggleState(false);
         } else {
-            if (!XImage.getConfig().needPreview) { //在预览的时候在预览的文本中会显示选中的个数的
-                tv_confirm.setText(XImage.getConfig().btnConfirmText);
-            }else{
-                tv_preview.setVisibility(View.INVISIBLE);
-            }
             tv_preview.setText("预览");
-            tv_preview.setTextColor(XImage.getConfig().textDisabledColor);
-            tv_cancel_select.setVisibility(View.INVISIBLE);
-
+            toggleState(true);
         }
     }
 
@@ -317,6 +325,7 @@ public class XSelectAct extends AutoLayoutActivity implements IQueryImageView, V
 
         //找到控件
         rl_root = (RelativeLayout) findViewById(R.id.rl_root);
+        rl_footMenu = (RelativeLayout) findViewById(R.id.rl_foot_menu);
         rl_titlebar = (RelativeLayout) findViewById(R.id.rl_titlebar);
         rl_back = (RelativeLayout) findViewById(R.id.rl_back);
         iv_back = (ImageView) findViewById(R.id.iv_back);
@@ -325,18 +334,24 @@ public class XSelectAct extends AutoLayoutActivity implements IQueryImageView, V
         tv_confirm = (TextView) findViewById(R.id.tv_confirm);
         tv_tip = (TextView) findViewById(R.id.tv_tip);
         tv_preview = (TextView) findViewById(R.id.tv_preview);
+        view_split_line = findViewById(R.id.view_split_line);
         tv_cancel_select = (TextView) findViewById(R.id.tv_cancel_select);
         rv = (RecyclerView) findViewById(R.id.rv);
 
-        //开始没有选中一个图片的时候,这两个文本是需要隐藏的
-        tv_preview.setVisibility(View.GONE);
-        tv_cancel_select.setVisibility(View.INVISIBLE);
+        //开始没有选中一个图片的时候,这两个文本是不可用的状态
+        if (!imgSelConfig.needPreview) {
+            tv_preview.setVisibility(View.GONE);
+            view_split_line.setVisibility(View.GONE);
+        }
+        tv_confirm.setText(imgSelConfig.btnConfirmText);
+        toggleState(true);
 
         //状态栏背景
         rl_root.setBackgroundColor(imgSelConfig.statusBarColor);
 
         //标题栏背景
         rl_titlebar.setBackgroundColor(imgSelConfig.titlebarBgColor);
+        rl_footMenu.setBackgroundColor(imgSelConfig.titlebarBgColor);
 
         //返回图标
         iv_back.setImageResource(imgSelConfig.backResId);
@@ -350,18 +365,7 @@ public class XSelectAct extends AutoLayoutActivity implements IQueryImageView, V
         tv_backTitle.setText(imgSelConfig.backTitle);
 
         //标题文本的颜色
-//            tv_backTitle.setTextColor(imgSelConfig.titleColor);
-
-        //确定按钮背景
-        tv_confirm.setBackgroundResource(imgSelConfig.btnConfirmBgDrawable);
-
-        //确定按钮的文字颜色
-        tv_confirm.setTextColor(imgSelConfig.btnConfirmTextColor);
-
-        tv_preview.setTextColor(imgSelConfig.textDisabledColor);
-
-        tv_confirm.setText(imgSelConfig.btnConfirmText);
-
+        tv_backTitle.setTextColor(imgSelConfig.textAbledColor);
 
         //创建一个对话框
         dialog = ProgressDialogUtil.create(mContext, ProgressDialog.STYLE_SPINNER, false);
@@ -528,13 +532,9 @@ public class XSelectAct extends AutoLayoutActivity implements IQueryImageView, V
         if (selectImage != null) {
             int size = selectImage.size();
             if (size > 0) {
-                if (!XImage.getConfig().needPreview) { //在预览的时候在预览的文本中会显示选中的个数的
-                    tv_confirm.setText(XImage.getConfig().btnConfirmText + "(" + size + "/" + XImage.getConfig().maxNum + ")");
-                }
+                tv_confirm.setText(XImage.getConfig().btnConfirmText + "(" + size + "/" + XImage.getConfig().maxNum + ")");
             } else {
-                if (!XImage.getConfig().needPreview) { //在预览的时候在预览的文本中会显示选中的个数的
-                    tv_confirm.setText(XImage.getConfig().btnConfirmText);
-                }
+                tv_confirm.setText(XImage.getConfig().btnConfirmText);
             }
         }
 
@@ -637,46 +637,20 @@ public class XSelectAct extends AutoLayoutActivity implements IQueryImageView, V
      * 刷新可见的item
      */
     private void reFreshVisibleItem() {
-        //更新看得见的这些数据
-        //int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-        //int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
-
-        //for (int i = firstVisibleItemPosition; i <= lastVisibleItemPosition; i++) {
-        //adapter.notifyItemRangeChanged(firstVisibleItemPosition, lastVisibleItemPosition - firstVisibleItemPosition + 1);
-        //}
-
-        //adapter.notifyDataSetChanged();
 
         adapter.notifyItemRangeChanged(0, mImages.size());
-
-
-//        XImageRecoder recoder = XImageRecoder.getInstance();=XImageRecoder.getInstance();
-//
-//        for (int i = 0; i < mImages.size(); i++) {
-//            String path = mImages.get(i);
-//        }
 
         //拿到选中的个数
         int selectImageNumber = getSelectImageNumber();
 
         if (selectImageNumber > 0) {
-            if (!XImage.getConfig().needPreview) { //在预览的时候在预览的文本中会显示选中的个数的
-                tv_confirm.setText(XImage.getConfig().btnConfirmText + "(" + selectImageNumber + "/" + XImage.getConfig().maxNum + ")");
-            }else{
-                tv_preview.setVisibility(View.VISIBLE);
-            }
-            tv_cancel_select.setVisibility(View.VISIBLE);
             tv_preview.setText("预览(" + selectImageNumber + ")");
-            tv_preview.setTextColor(XImage.getConfig().textAbledColor);
+            tv_confirm.setText(XImage.getConfig().btnConfirmText + "(" + selectImageNumber + "/" + XImage.getConfig().maxNum + ")");
+            toggleState(false);
         } else {
-            if (!XImage.getConfig().needPreview) { //在预览的时候在预览的文本中会显示选中的个数的
-                tv_confirm.setText(XImage.getConfig().btnConfirmText);
-            }else{
-                tv_preview.setVisibility(View.INVISIBLE);
-            }
-            tv_cancel_select.setVisibility(View.INVISIBLE);
             tv_preview.setText("预览");
-            tv_preview.setTextColor(XImage.getConfig().textDisabledColor);
+            tv_confirm.setText(XImage.getConfig().btnConfirmText);
+            toggleState(true);
         }
     }
 
@@ -686,7 +660,8 @@ public class XSelectAct extends AutoLayoutActivity implements IQueryImageView, V
 
         if (requestCode == REQUEST_CAMERA_CODE && resultCode == RESULT_OK) { //如果拍照成功
             if (pictureFile != null && pictureFile.exists() && pictureFile.isFile()) {
-                if (XImage.getConfig().needCrop) {
+                //当不是单选并且需要裁剪的时候才去裁剪
+                if (XImage.getConfig().needCrop && XImage.getConfig().maxNum <= 1) {
                     crop(pictureFile, pictureFile, REQUEST_IMAGE_CROP_CODE);
                 } else {
                     pictureImages.add(pictureFile.getPath());
@@ -769,33 +744,56 @@ public class XSelectAct extends AutoLayoutActivity implements IQueryImageView, V
 
     @Override
     public void onClick(View view) {
+
+        XImageRecoder imageRecoder = XImageRecoder.getInstance();
+
         int id = view.getId();
         if (id == R.id.rl_back) {
             finish();
         }
+
+        //如果本身就是一个都没选中,那么不做处理
+        if (imageRecoder.getSelectImageNumber() == 0) {
+            return;
+        }
+
         if (id == R.id.tv_confirm) {
             returnImages();
         }
+
         if (id == R.id.tv_preview) { //如果是预览的按钮
-            XImageRecoder imageRecoder = XImageRecoder.getInstance();
             imageRecoder.setNeedPreviewImages(imageRecoder.getSelectImages());
             ActivityUtil.startActivity(mContext, XPreviewAct.class);
         }
+
         if (id == R.id.tv_cancel_select) { //如果是取消选择
-            XImageRecoder imageRecoder = XImageRecoder.getInstance();
             //全部设置为未选中的状态
             imageRecoder.initAllImageStatus(false);
             //然后通知适配器改变
             adapter.notifyItemRangeChanged(0, mImages.size());
-
             tv_confirm.setText(XImage.getConfig().btnConfirmText);
             tv_preview.setText("预览");
-            //隐藏取消选择的文本
-            tv_cancel_select.setVisibility(View.INVISIBLE);
-            if(XImage.getConfig().needPreview){
-                tv_preview.setVisibility(View.INVISIBLE);
-            }else{
-            }
+
+            toggleState(true);
+        }
+    }
+
+    /**
+     * 转换状态
+     *
+     * @param isDisable 是否被禁用了
+     */
+    private void toggleState(boolean isDisable) {
+        if (isDisable) { //如果被禁用
+            tv_cancel_select.setTextColor(XImage.getConfig().textDisabledColor);
+            tv_preview.setTextColor(XImage.getConfig().textDisabledColor);
+            tv_confirm.setTextColor(XImage.getConfig().textDisabledColor);
+            tv_confirm.setBackgroundResource(XImage.getConfig().btnConfirmDisableBgDrawable);
+        } else {
+            tv_cancel_select.setTextColor(XImage.getConfig().textAbledColor);
+            tv_preview.setTextColor(XImage.getConfig().textAbledColor);
+            tv_confirm.setTextColor(XImage.getConfig().textAbledColor);
+            tv_confirm.setBackgroundResource(XImage.getConfig().btnConfirmAbleBgDrawable);
         }
     }
 
