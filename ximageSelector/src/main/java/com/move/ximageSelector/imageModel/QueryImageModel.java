@@ -104,9 +104,11 @@ public class QueryImageModel implements IQueryImageModel {
                     images.add(imagePath);
                 }
 
+                //如果有事先选中的图片集合
                 if (selectImages != null) {
                     int size = selectImages.size();
                     for (int i = 0; i < size; i++) {
+                        //拿到选中的图片路径
                         String path = selectImages.get(i);
                         if (!mImages.contains(path)) {
                             mImages.add(0,path);

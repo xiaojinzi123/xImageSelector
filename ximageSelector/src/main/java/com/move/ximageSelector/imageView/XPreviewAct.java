@@ -190,7 +190,7 @@ public class XPreviewAct extends AutoLayoutActivity implements View.OnClickListe
             tv_confirm.setTextColor(config.textDisabledColor);
             tv_confirm.setBackgroundResource(config.btnConfirmDisableBgDrawable);
         } else {
-            tv_confirm.setText(config.btnConfirmText + "（" + selectImageNumber + "/" + config.maxNum + ")");
+            tv_confirm.setText(config.btnConfirmText + "(" + selectImageNumber + "/" + config.maxNum + ")");
             tv_confirm.setTextColor(config.textAbledColor);
             tv_confirm.setBackgroundResource(config.btnConfirmAbleBgDrawable);
         }
@@ -236,11 +236,6 @@ public class XPreviewAct extends AutoLayoutActivity implements View.OnClickListe
 
         //返回图标
         //iv_back.setImageResource(imgSelConfig.backResId);
-        //如果返回图标有左边距
-        lp = (ViewGroup.MarginLayoutParams) iv_back.getLayoutParams();
-        lp.leftMargin = imgSelConfig.backResLeftMargin;
-        iv_back.setLayoutParams(lp);
-
 
         //确定按钮的背景颜色
         tv_confirm.setBackgroundResource(imgSelConfig.btnConfirmAbleBgDrawable);
@@ -311,7 +306,7 @@ public class XPreviewAct extends AutoLayoutActivity implements View.OnClickListe
                 tv_confirm.setTextColor(config.textDisabledColor);
                 tv_confirm.setBackgroundResource(config.btnConfirmDisableBgDrawable);
             } else {
-                tv_confirm.setText(config.btnConfirmText + "（" + selectImageNumber + "/" + config.maxNum + ")");
+                tv_confirm.setText(config.btnConfirmText + "(" + selectImageNumber + "/" + config.maxNum + ")");
                 tv_confirm.setTextColor(config.textAbledColor);
                 tv_confirm.setBackgroundResource(config.btnConfirmAbleBgDrawable);
             }

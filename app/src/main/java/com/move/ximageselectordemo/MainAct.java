@@ -2,7 +2,6 @@ package com.move.ximageselectordemo;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -35,12 +34,13 @@ public class MainAct extends AppCompatActivity {
 
         XSelectAct.open(this, new XImgSelConfig.Builder(imageLoader)
                 .btnConfirmText("完成")
-                .backTitle("返回")
+                .backTitle("")
                 .isPreview(false)
                 .maxNum(11)
                 .isPreview(true)
                 .cropSize(1, 1, 500, 500)
                 .isCamera(true)
+                .selectImage(mImages)
 //                .btnConfirmAbleBgDrawable(R.drawable.able)
 //                .btnConfirmDisableBgDrawable(R.drawable.able)
                 .backResId(R.mipmap.chacha)
@@ -53,6 +53,8 @@ public class MainAct extends AppCompatActivity {
 
     }
 
+    private ArrayList<String> mImages = new ArrayList<>();
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -61,6 +63,8 @@ public class MainAct extends AppCompatActivity {
 
             String s = "";
             if (images != null && images.size() > 0) {
+                mImages.clear();
+                mImages.addAll(images);
                 for (int i = 0; i < images.size(); i++) {
                     s += images.get(i) + " \n";
                 }

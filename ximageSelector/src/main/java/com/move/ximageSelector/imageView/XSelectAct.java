@@ -496,7 +496,6 @@ public class XSelectAct extends AutoLayoutActivity implements IQueryImageView, V
     @Override
     public void disPlayAllImage(List<String> images) {
 
-
         int mSize = mImages.size();
         mImages.clear();
 
@@ -532,9 +531,13 @@ public class XSelectAct extends AutoLayoutActivity implements IQueryImageView, V
         if (selectImage != null) {
             int size = selectImage.size();
             if (size > 0) {
+                tv_preview.setText("预览(" + size + ")");
                 tv_confirm.setText(XImage.getConfig().btnConfirmText + "(" + size + "/" + XImage.getConfig().maxNum + ")");
+                toggleState(false);
             } else {
+                tv_preview.setText("预览");
                 tv_confirm.setText(XImage.getConfig().btnConfirmText);
+                toggleState(true);
             }
         }
 
