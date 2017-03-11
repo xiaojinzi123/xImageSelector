@@ -8,7 +8,8 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
-    <color name="demo1">#543210</color>
-    <color name="demo2">#654321</color>
+    <!--确定完成按钮按下和不按下的时候的背景颜色-->
+    <color name="comfirm_press_color">#777700</color>
+    <color name="comfirm_unpress_color">#888800</color>
 
 </resources>

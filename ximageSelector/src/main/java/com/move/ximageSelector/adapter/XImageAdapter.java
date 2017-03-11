@@ -52,12 +52,7 @@ public class XImageAdapter extends CommonRecyclerViewAdapter<String> {
             iv_select_flag.setVisibility(View.INVISIBLE);
             view_cover.setVisibility(View.INVISIBLE);
             iv.setImageBitmap(null);
-            int cameraResId = imgSelConfig.cameraResId;
-            if (cameraResId != -1) {
-                iv.setImageResource(cameraResId);
-            } else {
-                iv.setImageResource(R.mipmap.capture);
-            }
+            iv.setImageResource(imgSelConfig.cameraResId);
             return;
         }
 

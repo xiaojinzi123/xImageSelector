@@ -3,6 +3,7 @@ package com.move.ximageSelector.config;
 import android.graphics.Color;
 
 
+import com.move.ximageSelector.R;
 import com.move.ximageSelector.utils.XImageLoader;
 
 import java.io.Serializable;
@@ -14,6 +15,11 @@ import java.util.ArrayList;
 public class XImgSelConfig {
 
     /**
+     * 表示没有
+     */
+    public static final int NULL = -1;
+
+    /**
      * 预选中的图片
      */
     public ArrayList<String> selectImage;//
@@ -21,7 +27,7 @@ public class XImgSelConfig {
     /**
      * sd卡的临时文件夹名称
      */
-    public String sdCardFolderName;//
+    public String sdCardFolderName = "XImageCache";//
 
     /**
      * 是否清理图片
@@ -51,22 +57,27 @@ public class XImgSelConfig {
     /**
      * 状态栏的背景色
      */
-    public int statusBarColor = -1;//
+    public int statusBarColor = Color.parseColor("#343D44");//
 
     /**
      * 标题栏背景色
      */
-    public int titlebarBgColor = -1;//
+    public int titlebarBgColor = Color.parseColor("#343D44");//
+
+    /**
+     * 返回图标的左边距
+     */
+    public int backResLeftMargin = 0;
 
     /**
      * 返回图标资源
      */
-    public int backResId = -1; //
+    public int backResId = R.mipmap.back_icon; //
 
     /**
      * 列表中item0位置的照相机的图片资源
      */
-    public int cameraResId = -1; //
+    public int cameraResId = R.mipmap.capture; //
 
     /**
      * 左下角弹出目录选择的小图标
@@ -76,27 +87,27 @@ public class XImgSelConfig {
     /**
      * 标题
      */
-    public String title; //
+    public String backTitle = "返回"; //
 
     /**
      * 标题颜色
      */
-    public int titleColor = -1; //
+    public int titleColor = Color.WHITE; //
 
     /**
      * 确定按钮文字颜色
      */
-    public int btnConfirmTextColor = -1;//
+    public int btnConfirmTextColor = Color.WHITE;//
 
     /**
      * 确定按钮的文本
      */
-    public String btnConfirmText;//
+    public String btnConfirmText = "确定";//
 
     /**
      * 确定按钮的背景
      */
-    public int btnConfirmBgDrawable = -1;//
+    public int btnConfirmBgDrawable = R.drawable.confirm_bg;//
 
     /**
      * 文本不可用颜色值
@@ -123,21 +134,44 @@ public class XImgSelConfig {
 
     public XImgSelConfig(Builder builder) {
         this.selectImage = builder.selectImage;
-        this.sdCardFolderName = builder.sdCardFolderName;
+        if (builder.sdCardFolderName != null && !builder.sdCardFolderName.equals("")) {
+            this.sdCardFolderName = builder.sdCardFolderName;
+        }
         this.isClearImageCache = builder.isClearImageCache;
         this.needCrop = builder.isCrop;
         this.needPreview = builder.isPreview;
         this.maxNum = builder.maxNum;
         this.needCamera = builder.isCamera;
-        this.statusBarColor = builder.statusBarColor;
-        this.backResId = builder.backResId;
-        this.cameraResId = builder.cameraResId;
-        this.title = builder.title;
-        this.titlebarBgColor = builder.titlebarBgColor;
-        this.btnConfirmBgDrawable = builder.btnConfirmBgDrawable;
-        this.titleColor = builder.titleColor;
-        this.btnConfirmText = builder.btnConfirmText;
-        this.btnConfirmTextColor = builder.btnConfirmTextColor;
+        if (builder.statusBarColor != NULL) {
+            this.statusBarColor = builder.statusBarColor;
+        }
+        if (builder.backResLeftMargin != NULL) {
+            this.backResLeftMargin = builder.backResLeftMargin;
+        }
+        if (builder.backResId != NULL) {
+            this.backResId = builder.backResId;
+        }
+        if (builder.cameraResId != NULL) {
+            this.cameraResId = builder.cameraResId;
+        }
+        if (builder.backTitle != null) {
+            this.backTitle = builder.backTitle;
+        }
+        if (builder.titlebarBgColor != NULL) {
+            this.titlebarBgColor = builder.titlebarBgColor;
+        }
+        if (builder.btnConfirmBgDrawable != NULL) {
+            this.btnConfirmBgDrawable = builder.btnConfirmBgDrawable;
+        }
+        if (builder.titleColor != NULL) {
+            this.titleColor = builder.titleColor;
+        }
+        if (builder.btnConfirmText != null) {
+            this.btnConfirmText = builder.btnConfirmText;
+        }
+        if (builder.btnConfirmTextColor != NULL) {
+            this.btnConfirmTextColor = builder.btnConfirmTextColor;
+        }
 
         this.loader = builder.loader;
         this.aspectX = builder.aspectX;
@@ -149,21 +183,22 @@ public class XImgSelConfig {
     public static class Builder implements Serializable {
 
         private ArrayList<String> selectImage;
-        private String sdCardFolderName = "XImageCache";
+        private String sdCardFolderName = null;
         private boolean isClearImageCache = false;
         private boolean isCrop = false;
         private boolean isPreview = false;
         private int maxNum = 9;
         private boolean isCamera = true;
-        public int statusBarColor = -1;
-        private int backResId = -1;
-        private int cameraResId = -1;
-        private String title = "图片";
-        private int titleColor = Color.WHITE;
-        private int titlebarBgColor = -1;
-        private int btnConfirmBgDrawable = -1;
-        private int btnConfirmTextColor = Color.WHITE;
-        private String btnConfirmText = "确定";
+        public int statusBarColor = NULL;
+        private int backResLeftMargin = NULL;
+        private int backResId = NULL;
+        private int cameraResId = NULL;
+        private String backTitle = null;
+        private int titleColor = NULL;
+        private int titlebarBgColor = NULL;
+        private int btnConfirmBgDrawable = NULL;
+        private int btnConfirmTextColor = NULL;
+        private String btnConfirmText = null;
 
         private XImageLoader loader;
 
@@ -231,8 +266,13 @@ public class XImgSelConfig {
             return this;
         }
 
-        public Builder title(String title) {
-            this.title = title;
+        public Builder backResLeftMargin(int backResLeftMargin) {
+            this.backResLeftMargin = backResLeftMargin;
+            return this;
+        }
+
+        public Builder backTitle(String backTitle) {
+            this.backTitle = backTitle;
             return this;
         }
 
@@ -269,4 +309,5 @@ public class XImgSelConfig {
             return new XImgSelConfig(this);
         }
     }
+
 }

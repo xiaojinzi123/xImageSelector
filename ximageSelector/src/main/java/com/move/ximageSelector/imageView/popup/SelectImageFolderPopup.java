@@ -24,6 +24,7 @@ import com.move.ximageSelector.utils.other.recyclerView.CommonRecyclerViewHolder
 
 /**
  * Created by cxj on 2016/10/9.
+ * 弹出选择文件夹的窗口
  */
 public class SelectImageFolderPopup extends BottomSheetDialog {
 

@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="68px"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/bg"
+                android:background="@drawable/confirm_bg"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="36px"
                 android:text="确定"
