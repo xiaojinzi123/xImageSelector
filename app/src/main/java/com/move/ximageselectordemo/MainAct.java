@@ -34,7 +34,7 @@ public class MainAct extends AppCompatActivity {
 
         XSelectAct.open(this, new XImgSelConfig.Builder(imageLoader)
                 .btnConfirmText("完成")
-                .backTitle("")
+                .backTitle("返回")
                 .isPreview(false)
                 .maxNum(11)
                 .isPreview(true)
@@ -43,11 +43,8 @@ public class MainAct extends AppCompatActivity {
                 .selectImage(mImages)
 //                .btnConfirmAbleBgDrawable(R.drawable.able)
 //                .btnConfirmDisableBgDrawable(R.drawable.able)
-                .backResId(R.mipmap.chacha)
-                .backResLeftMargin(40)
+                //.backResLeftMargin(40)
                 .btnConfirmText("完成")
-                .itemSelectedImg(R.mipmap.select)
-                .itemUnSelectedImg(R.mipmap.unselect)
                 .isCrop(true)
                 .build(), 123);
 
