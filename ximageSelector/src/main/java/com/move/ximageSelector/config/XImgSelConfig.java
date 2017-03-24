@@ -143,6 +143,14 @@ public class XImgSelConfig {
     public int outputX = 400;
     public int outputY = 400;
 
+    /**
+     * 释放资源
+     */
+    public void release() {
+        loader = null;
+        selectImage = null;
+    }
+
     public XImgSelConfig(Builder builder) {
         this.selectImage = builder.selectImage;
         if (builder.sdCardFolderName != null && !builder.sdCardFolderName.equals("")) {

@@ -819,5 +819,7 @@ public class XSelectAct extends AutoLayoutActivity implements IQueryImageView, V
         adapter.notifyItemRangeRemoved(0, size);
         XImageRecoder.getInstance().release();
         presenter.release();
+        XImage.getConfig().release();
+        XImage.setConfig(null);
     }
 }
