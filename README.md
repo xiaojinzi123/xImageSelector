@@ -18,38 +18,42 @@ Step 2. Add the dependency
 ### version 1.0
 ---
 	dependencies {
-	        compile 'com.github.xiaojinzi123:xImageSelector:1.0'
+	        compile 'com.github.xiaojinzi123:xImageSelector:1.2.1'
 	}
 ### how to use
 ---
   
-  ```
-XImageLoader imageLoader = new XImageLoader() {
-	@Override
-	public void load(Context context, String localPath, ImageView iv) {
+```
+        XImageLoader imageLoader = new XImageLoader() {
+            @Override
+            public void load(Context context, String localPath, ImageView iv) {
                 Glide.with(context).load(localPath).into(iv);
-	}
-};
+            }
+        };
 
-XSelectAct.open(this, new XImgSelConfig.Builder(imageLoader)
+        //创建启动图片选择器的配置文件
+        XImage.setConfig(new XImgSelConfig.Builder(imageLoader)
                 .btnConfirmText("完成")
-                .title("图片")
-                .isPreview(true)
-                .statusBarColor(ColorUtil.getColor(this, R.color.common_app_color))
-                .titlebarBgColor(ColorUtil.getColor(this, R.color.common_app_color))
+                .backTitle("")
+                .backResLeftMargin(30)
+                .backResId(R.mipmap.ic_close)
                 .maxNum(1)
-                .isPreview(false)
-                .cropSize(1, 1, 800, 800)
+                .isPreview(true)
+                .cropSize(1, 1, 600, 300)
                 .isCamera(true)
-                .isCrop(true)
-                .build(), 123);
+                .isCrop(false)
+                .build());
+
+        //启动界面
+        Intent i = new Intent(mContext, XSelectAct.class);
+        startActivityForResult(i, requestImageCode);
 ```
 123是请求码,需要在activity的OnActivityresult方法中使用
 ```
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 123 && resultCode == RESULT_OK && data != null) {
+        if (requestCode == requestImageCode && resultCode == RESULT_OK && data != null) {
             ArrayList<String> images = data.getStringArrayListExtra("data");
 
             if (images != null && images.size() > 0) {
