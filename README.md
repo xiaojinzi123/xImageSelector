@@ -48,7 +48,7 @@ Step 2. Add the dependency
         Intent i = new Intent(mContext, XSelectAct.class);
         startActivityForResult(i, requestImageCode);
 ```
-123是请求码,需要在activity的OnActivityresult方法中使用
+requestImageCode是请求码,需要在activity的OnActivityresult方法中使用
 ```
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
